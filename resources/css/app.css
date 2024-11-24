@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .header, .footer {
+        @apply bg-gray-800 text-white p-4 flex justify-center text-center;
+    }
+
+    .main-content {
+        @apply flex-grow flex items-center justify-center;
+    }
+}
