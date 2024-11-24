@@ -22,13 +22,11 @@
             <div>
                 <label for="category" class="block text-gray-700 font-medium mb-2">Categoria</label>
                 <select id="category" name="category" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" required>
-                    <option value="">Selecione uma categoria</option>
-                    <option value="alimentacao">Alimentação</option>
-                    <option value="transporte">Transporte</option>
-                    <option value="lazer">Lazer</option>
-                    <option value="saude">Saúde</option>
-                    <option value="educacao">Educação</option>
-                    <option value="outros">Outros</option>
+                    <option value="1">Selecione uma categoria</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                    <option value="4">Outros</option>
                 </select>
             </div>
 
@@ -37,12 +35,12 @@
                 <label class="block text-gray-700 font-medium mb-2">Tipo</label>
                 <div class="flex items-center space-x-4">
                     <label class="inline-flex items-center">
-                        <input type="radio" name="type" value="entrada" class="text-blue-500 focus:ring focus:ring-blue-500" required>
-                        <span class="ml-2 text-gray-700">Entrada</span>
+                        <input type="radio" name="type" value="receita" class="text-blue-500 focus:ring focus:ring-blue-500" required>
+                        <span class="ml-2 text-gray-700">Receita</span>
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="radio" name="type" value="saida" class="text-blue-500 focus:ring focus:ring-blue-500">
-                        <span class="ml-2 text-gray-700">Saída</span>
+                        <input type="radio" name="type" value="despesa" class="text-blue-500 focus:ring focus:ring-blue-500">
+                        <span class="ml-2 text-gray-700">Despesa</span>
                     </label>
                 </div>
             </div>

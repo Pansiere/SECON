@@ -22,7 +22,8 @@ class TransactionController extends Controller
         $categories = Category::all();
         return view("pages.transactions.form", [
             'title' => $this->title,
-            'header' => 'Adicionar Transação'
+            'header' => 'Adicionar Transação',
+            'categories' => $categories
         ]);
     }
     /**

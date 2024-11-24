@@ -10,8 +10,9 @@
 <body class="flex min-h-screen overflow-hidden">
 <aside class="sidebar w-0.5/4 p-4 bg-gray-100 min-h-screen flex flex-col">
     <div class="profile mb-6 text-center">
-        <img src="#.jpg" alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-2">
-        <p class="font-bold">João Pedro</p>
+{{--        <img src="#.jpg" alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-2">--}}
+        <img src="https://cdn.pixabay.com/photo/2024/06/01/14/00/ai-8802304_1280.jpg" alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-2">
+        <p class="font-bold">{{ auth()->user()->name }}</p>
     </div>
 
     <h2 class="font-bold text-lg">Menu de Navegação</h2>
