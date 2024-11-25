@@ -11,15 +11,15 @@
             <div class="flex space-x-8">
                 <div class="text-center">
                     <h3 class="text-lg font-bold text-green-500">Receita</h3>
-                    <p class="text-2xl">R$ 5.000,00</p>
+                    <p class="text-2xl">R$ {{ number_format(num: $income, decimals: 2, decimal_separator: ',', thousands_separator: '.') }} </p>
                 </div>
                 <div class="text-center">
                     <h3 class="text-lg font-bold text-red-500">Despesa</h3>
-                    <p class="text-2xl">R$ 3.200,00</p>
+                    <p class="text-2xl">R$ {{ number_format(num: $expense, decimals: 2, decimal_separator: ',', thousands_separator: '.') }}</p>
                 </div>
                 <div class="text-center">
                     <h3 class="text-lg font-bold text-blue-500">Saldo</h3>
-                    <p class="text-2xl">R$ 1.800,00</p>
+                    <p class="text-2xl">{{ number_format(num: $summary, decimals: 2, decimal_separator: ',', thousands_separator: '.') }}</p>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <div>
                     <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
                     <select id="month" name="month" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="1">Janeiro</option>
+{{--                        <option value="1">{{ $category->name }}</option>--}}
                         <option value="2">Fevereiro</option>
                         <option value="3" selected>Março</option>
                     </select>
@@ -39,6 +39,9 @@
                     <label for="category" class="block text-sm font-medium text-gray-700">Categoria</label>
                     <select id="category" name="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">Todas</option>
+                        @foreach($categories as $category)
+                            <option value="1">{{ $category->name }}</option>
+                        @endforeach
                         <option value="1">Alimentação</option>
                         <option value="2">Transporte</option>
                         <option value="3">Lazer</option>
@@ -86,18 +89,13 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {{ date('d/m/Y', strtotime($transaction->date)) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->description }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->category_id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->category->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm {{ $transaction->type === 'Receita' ? 'text-green-500' : 'text-red-500' }}">
                             {{ $transaction->type }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">R$ {{ number_format(num: $transaction->value, decimals: 2, decimal_separator: ',', thousands_separator: '.') }} </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                            <form action="{{ route('transacoes.edit', $transaction->id) }}" method="GET" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="text-yellow-500 hover:text-yellow-600" onclick="return confirm('Tem certeza que deseja excluir esta transação?')">
-                                    Editar
-                                </button>
-                            </form>
+                            <a href="{{ route('transacoes.edit', $transaction->id) }}" class="text-yellow-500 hover:text-yellow-600">Editar</a>
                             <form action="{{ route('transacoes.destroy', $transaction->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')

@@ -45,14 +45,27 @@ class CategoryController extends Controller
         return redirect('/categorias')->with('success', 'Categoria adicionada com sucesso!');
     }
 
+    public function edit(string $id)
+    {
+        $title = $this->title;
+        $header = 'Editando categoria tal';
+        $category = Category::findOrFail($id);
+
+        return view('pages.categories.form', [
+            'title'=>$title,
+            'header'=>$header,
+            'category'=>$category
+        ]);
+    }
+
     public function update(Request $request, string $id)
     {
-        $categories = Category::find($id);
+        $category = Category::find($id);
 
-        $categories->nome = $request->categoriaNome;
-        $categories->save();
+        $category->name = $request->category_name;
+        $category->save();
 
-        return redirect('/categories')->with('success', 'Categoria atualizada com sucesso!');
+        return redirect('/categorias')->with('success', 'Categoria atualizada com sucesso!');
     }
 
     public function destroy(string $id)
