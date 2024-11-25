@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -14,8 +15,24 @@ class TransactionController extends Controller
     {
         $title = $this->title;
         $header = 'Transações';
-        $transactions = Transaction::with(['category'])->where('user_id', auth()->id())->get();
+
         $categories = Category::where('user_id', auth()->id())->get();
+
+        $transactions = Transaction::with(['category'])
+            ->where('user_id', auth()->id())
+            ->whereMonth('date', Carbon::now()->month)
+            ->whereYear('date', Carbon::now()->year)
+            ->orderBy('date')
+            ->get();
+
+        $months = Transaction::selectRaw('MONTH(date) as month')
+            ->where('user_id', auth()->id())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('month')
+            ->map(function ($month) {
+                return Carbon::create()->month($month)->translatedFormat('F');
+            });
 
         $income = 0;
         $expense = 0;
@@ -32,7 +49,7 @@ class TransactionController extends Controller
         }
         $summary = $income - $expense;
 
-        return view('pages.transactions.index', compact('transactions', 'categories', 'title', 'header', 'income', 'expense', 'summary'));
+        return view('pages.transactions.index', compact('transactions', 'categories', 'title', 'header', 'income', 'expense', 'summary', 'months'));
     }
 
     public function create()

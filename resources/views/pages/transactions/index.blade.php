@@ -29,7 +29,6 @@
                 <div>
                     <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
                     <select id="month" name="month" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-{{--                        <option value="1">{{ $category->name }}</option>--}}
                         <option value="2">Fevereiro</option>
                         <option value="3" selected>Março</option>
                     </select>
@@ -42,18 +41,16 @@
                         @foreach($categories as $category)
                             <option value="1">{{ $category->name }}</option>
                         @endforeach
-                        <option value="1">Alimentação</option>
-                        <option value="2">Transporte</option>
-                        <option value="3">Lazer</option>
                     </select>
                 </div>
+
 
                 <div>
                     <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
                     <select id="type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">Todos</option>
-                        <option value="receita">Receita</option>
-                        <option value="despesa">Despesa</option>
+                        <option value="Receita">Receita</option>
+                        <option value="Despesa">Despesa</option>
                     </select>
                 </div>
 
