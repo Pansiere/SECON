@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -11,10 +12,11 @@ class TransactionController extends Controller
 
     public function index()
     {
-        return view('pages.transactions.index', [
-            'title' => $this->title,
-            'header' => 'Transações'
-        ]);
+        $title = $this->title;
+        $header = 'Transações';
+        $transactions = Transaction::where ('user_id', auth()->id())->get();
+
+        return view('pages.transactions.index', compact('transactions', 'title', 'header'));
     }
 
     public function create()
@@ -31,7 +33,17 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $transaction = new Transaction();
+
+        $transaction->user_id = auth()->id();
+        $transaction->type = $request->input('type');
+        $transaction->value = $request->input('value');
+        $transaction->description = $request->input('description');
+        $transaction->category_id = $request->input('category_id');
+        $transaction->date = $request->input('date');
+        $transaction->save();
+
+        return redirect('/transacoes')->with('success', 'Transação adicionada com sucesso!');
     }
     /**
      * Show the form for editing the specified resource.
@@ -53,6 +65,8 @@ class TransactionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Transaction::where('id', $id)->delete();
+
+        return redirect('/transacoes')->with('success', 'Transação excluída com sucesso!');
     }
 }

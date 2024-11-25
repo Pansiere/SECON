@@ -2,7 +2,7 @@
 
 @section("content")
     <div class="dashboard p-6 space-y-6">
-        <!-- Header com saldo, receita e despesa -->
+
         <div class="flex justify-between items-center bg-gray-100 p-4 rounded-md shadow-md">
             <div>
                 <h2 class="text-xl font-semibold">Resumo do Mês</h2>
@@ -24,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Filtros de pesquisa -->
         <div class="flex justify-between items-center bg-white p-4 rounded-md shadow-md">
             <form method="GET" action="#" class="flex space-x-4">
                 <div>
@@ -61,7 +60,11 @@
             </form>
         </div>
 
-        <!-- Lista de Transações -->
+        @if (session('success'))
+            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="bg-white p-4 rounded-md shadow-md">
             <div class="w-1/2 flex justify-between items-center py-4">
                 <h3 class="text-xl font-semibold">Transações Cadastradas</h3>
@@ -79,29 +82,32 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/03/2024</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Salário</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Renda</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-500">Receita</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">R$ 3.000,00</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                        <a href="#" class="text-yellow-500 hover:text-yellow-600">Editar</a>
-                        <a href="#" class="text-red-500 hover:text-red-600 ml-4">Excluir</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10/03/2024</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Supermercado</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Alimentação</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500">Despesa</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">R$ 500,00</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
-                        <a href="#" class="text-yellow-500 hover:text-yellow-600">Editar</a>
-                        <a href="#" class="text-red-500 hover:text-red-600 ml-4">Excluir</a>
-                    </td>
-                </tr>
-                <!-- Adicione mais linhas conforme necessário -->
+                @foreach($transactions as $transaction)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {{ date('d/m/Y', strtotime($transaction->date)) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->description }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->category_id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm {{ $transaction->type === 'Receita' ? 'text-green-500' : 'text-red-500' }}">
+                            {{ $transaction->type }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">R$ {{ number_format(num: $transaction->value, decimals: 2, decimal_separator: ',', thousands_separator: '.') }} </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                            <form action="{{ route('transacoes.edit', $transaction->id) }}" method="GET" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="text-yellow-500 hover:text-yellow-600" onclick="return confirm('Tem certeza que deseja excluir esta transação?')">
+                                    Editar
+                                </button>
+                            </form>
+                            <form action="{{ route('transacoes.destroy', $transaction->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-600 ml-4" onclick="return confirm('Tem certeza que deseja excluir esta transação?')">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

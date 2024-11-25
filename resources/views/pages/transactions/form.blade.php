@@ -4,8 +4,8 @@
     <div class="bg-white p-8 rounded-lg shadow-md w-full">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Adicionar Transação</h2>
 
-        <form action="#" method="POST" class="space-y-4">
-
+        <form action="{{ route('transacoes.store') }}" method="POST" class="space-y-4">
+            @csrf
             <!-- Data -->
             <div>
                 <label for="date" class="block text-gray-700 font-medium mb-2">Data</label>
@@ -21,7 +21,7 @@
             <!-- Categoria -->
             <div>
                 <label for="category" class="block text-gray-700 font-medium mb-2">Categoria</label>
-                <select id="category" name="category" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" required>
+                <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" required>
                     <option value="1">Selecione uma categoria</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -35,11 +35,11 @@
                 <label class="block text-gray-700 font-medium mb-2">Tipo</label>
                 <div class="flex items-center space-x-4">
                     <label class="inline-flex items-center">
-                        <input type="radio" name="type" value="receita" class="text-blue-500 focus:ring focus:ring-blue-500" required>
+                        <input type="radio" name="type" value="Receita" class="text-blue-500 focus:ring focus:ring-blue-500" required>
                         <span class="ml-2 text-gray-700">Receita</span>
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="radio" name="type" value="despesa" class="text-blue-500 focus:ring focus:ring-blue-500">
+                        <input type="radio" name="type" value="Despesa" class="text-blue-500 focus:ring focus:ring-blue-500">
                         <span class="ml-2 text-gray-700">Despesa</span>
                     </label>
                 </div>
