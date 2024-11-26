@@ -34,8 +34,6 @@ class TransactionController extends Controller
                 return Carbon::create()->month($month)->translatedFormat('F');
             });
 
-        dd($months);
-
         $income = 0;
         $expense = 0;
 

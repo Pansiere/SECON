@@ -29,8 +29,9 @@
                 <div>
                     <label for="month" class="block text-sm font-medium text-gray-700">Mês</label>
                     <select id="month" name="month" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="2">Fevereiro</option>
-                        <option value="3" selected>Março</option>
+                        @foreach($months as $month)]
+                            <option value="{{ $month }}">{{ ucfirst($month) }}</option>
+                        @endforeach
                     </select>
                 </div>
 
